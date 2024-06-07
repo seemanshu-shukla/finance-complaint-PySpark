@@ -93,3 +93,4 @@ class TrainingPipeline:
                 self.start_model_pusher(model_trainer_artifact=model_trainer_artifact)
         except Exception as e:
             raise FinanceException(e, sys)
+
