@@ -1,14 +1,14 @@
-# <p align="center"><u>Finance-Complaint</u></p>
+# <p align="center"><ins>Finance-Complaint</ins></p>
 
-## <u>Problem Statement</u>:
+## <ins>Problem Statement</ins>:
 Complaints can give us insights into problems people are experiencing in the marketplace and help us to understand the reason and do necessary modifications in exisiting financial product if required.
 
-## <u>Solution Proposed</u>: 
+## <ins>Solution Proposed</ins>: 
 By understanding existing complaints registered against financial products we can create an ML model that can help us to identify newly registered complaints whether they are problematic or not and accordingly company can take quick action to resolve the issue, and satisfy the customer's need.
 
 Therefore, the problem statement is to identify registered complaint will be disputed by customer or not.
 
-## <u>Tech Stack Used</u>:
+## <ins>Tech Stack Used</ins>:
 1. <b>Python</b>
 2. <b>PySpark</b>
 3. <b>PySpark ML</b>
@@ -17,19 +17,19 @@ Therefore, the problem statement is to identify registered complaint will be dis
 6. <b>Terraform</b> - to automate the provisioning and deprovisioning of the required infrastructure
 7. <b>circleci</b> - for CICD deployment workflow automation
 
-## <u>Infrastructure Required</u>:
+## <ins>Infrastructure Required</ins>:
 1. <b>GCP Compute Engine</b> - to deploy our AI powered application over cloud
 2. <b>AWS S3 Bucket</b> - to register best performing trained model
 3. <b>GCP Artifact Registry</b> - to store the docker image built during continous delivery
 
-## <u>Dashboarding</u>:
+## <ins>Dashboarding</ins>:
 1. <b>Node Exporter</b> - to collect or scrap the system logs like RAM, ROM utilization etc
 2. <b>Prometheus</b> - to store the logs collected by Node Exporter
 3. <b>Promtail</b> - to collect or scrap the application logs
 4. <b>Loki</b> - to store the logs collected by Promtail
 5. <b>Grafana</b> - to create dashboard using logs stored in Prometheus and Loki
 
-## <u>Steps to run project in local system</u>:
+## <ins>Steps to run project in local system</ins>:
 1. Build docker image
 ```
 docker build -t fc:lts .
@@ -51,7 +51,7 @@ docker-compose up
 docker-compose down
 ``` 
 
-## <u>How to setup airflow in local</u>:
+## <ins>How to setup airflow in local</ins>:
 1. Set airflow directory
 ```
 export AIRFLOW_HOME="/home/seema/census_consumer_project/census_consumer_complaint/airflow"
