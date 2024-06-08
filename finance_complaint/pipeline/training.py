@@ -9,11 +9,23 @@ from finance_complaint.entity.artifact_entity import DataIngestionArtifact, Data
 
 import sys
 
+from finance_complaint.data_access.data_ingestion_artifact import DataIngestionArtifactData
+from finance_complaint.data_access.data_validation_artifact import DataValidationArtifactData
+from finance_complaint.data_access.data_transformation_artifact import DataTransformationArtifactData
+from finance_complaint.data_access.model_trainer_artifact import ModelTrainerArtifactData
+from finance_complaint.data_access.model_pusher_artifact import ModelPusherArtifactData
+
 
 class TrainingPipeline:
 
     def __init__(self, finance_config: FinanceConfig):
         self.finance_config: FinanceConfig = finance_config
+
+        self.mongodb_data_ingestion_artifact = DataIngestionArtifactData()
+        self.mongodb_data_validation_artifact = DataValidationArtifactData()
+        self.mongodb_data_transformation_artifact = DataTransformationArtifactData()
+        self.mongodb_model_trainer_artifact = ModelTrainerArtifactData()
+        self.mongodb_model_pusher_artifact = ModelPusherArtifactData()
 
     def start_data_ingestion(self) -> DataIngestionArtifact:
         try:
@@ -82,15 +94,29 @@ class TrainingPipeline:
     def start(self):
         try:
             data_ingestion_artifact = self.start_data_ingestion()
+
+            self.mongodb_data_ingestion_artifact.save_artifact(artifact=data_ingestion_artifact)
+
             data_validation_artifact = self.start_data_validation(data_ingestion_artifact=data_ingestion_artifact)
+            
+            self.mongodb_data_validation_artifact.save_artifact(artifact=data_validation_artifact)
+            
             data_transformation_artifact = self.start_data_transformation(
                 data_validation_artifact=data_validation_artifact)
+            
+            self.mongodb_data_transformation_artifact.save_artifact(artifact=data_transformation_artifact)
+            
             model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
+            
+            self.mongodb_model_trainer_artifact.save_artifact(artifact=model_trainer_artifact)
+
             model_eval_artifact = self.start_model_evaluation(data_validation_artifact=data_validation_artifact,
                                                               model_trainer_artifact=model_trainer_artifact
                                                               )
             if model_eval_artifact.model_accepted:
-                self.start_model_pusher(model_trainer_artifact=model_trainer_artifact)
+                model_pusher_artifact = self.start_model_pusher(model_trainer_artifact=model_trainer_artifact)
+                self.mongodb_model_pusher_artifact.save_artifact(artifact=model_pusher_artifact)
+        
         except Exception as e:
             raise FinanceException(e, sys)
 
